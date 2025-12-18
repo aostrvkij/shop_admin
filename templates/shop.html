@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин товаров</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">
+                <i class="fas fa-store"></i> Магазин товаров
+            </h1>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="main">
+        <div class="container">
+            <!-- Кнопки категорий -->
+            <section class="categories-section">
+                <div class="categories-buttons" id="categories-buttons">
+                    <!-- Все товары кнопка -->
+                    <button class="category-btn active" data-category="all">
+                        <i class="fas fa-boxes"></i> Все товары
+                    </button>
+                    <!-- Категории будут добавлены через JS -->
+                </div>
+            </section>
+
+            <!-- Товары -->
+            <section class="products-section">
+                <div class="section-header">
+                    <h2 id="current-category">Все товары</h2>
+                    <p class="products-count">Товаров: <span id="products-count">0</span></p>
+                </div>
+
+                <div class="products-grid" id="products-container">
+                    <!-- Товары будут загружены через JavaScript -->
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> Загрузка товаров...
+                    </div>
+                </div>
+            </section>
+
+            <!-- Контакты -->
+            <section class="contacts-section" id="contacts">
+                <div class="section-header">
+                    <h2><i class="fas fa-address-book"></i> Контакты</h2>
+                </div>
+
+                <div class="contacts-grid">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h3>Телефон</h3>
+                            <p>+7 (999) 123-45-67</p>
+                            <p>Ежедневно с 9:00 до 21:00</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h3>Email</h3>
+                            <p>info@shop.ru</p>
+                            <p>orders@shop.ru</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h3>Адрес</h3>
+                            <p>г. Москва, ул. Торговая, д. 123</p>
+                            <p>БЦ "Торговый центр", 5 этаж</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-info">
+                            <h3>Режим работы</h3>
+                            <p>Пн-Пт: 10:00 - 20:00</p>
+                            <p>Сб-Вс: 11:00 - 18:00</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2023 Магазин товаров. Все права защищены.</p>
+                <a href="#contacts" class="footer-link">
+                    <i class="fas fa-phone"></i> Контакты
+                </a>
+                <a href="/admin/123123" class="footer-link" target="_blank">
+                    <i class="fas fa-lock"></i> Админка
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/shop.js') }}"></script>
+</body>
+</html>

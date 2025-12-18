@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Шапка админки -->
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-header-content">
+                <h1 class="admin-logo">
+                    <i class="fas fa-cogs"></i> Админ-панель
+                </h1>
+                <div class="admin-actions">
+                    <a href="/" class="btn btn-outline" target="_blank">
+                        <i class="fas fa-store"></i> На сайт
+                    </a>
+                    <button id="logout-btn" class="btn btn-danger">
+                        <i class="fas fa-sign-out-alt"></i> Выйти
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="admin-main">
+        <div class="container">
+            <!-- Раздел категорий -->
+            <section class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-list"></i> Управление категориями</h2>
+                    <button id="add-category-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Добавить категорию
+                    </button>
+                </div>
+
+                <div class="admin-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Название</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categories-table">
+                            <tr>
+                                <td colspan="3" class="loading">
+                                    <i class="fas fa-spinner fa-spin"></i> Загрузка категорий...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Раздел товаров -->
+            <section class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-box"></i> Управление товарами</h2>
+                    <button id="add-product-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Добавить товар
+                    </button>
+                </div>
+
+                <!-- Фильтр по категории -->
+                <div class="admin-filters">
+                    <div class="filter-group">
+                        <label for="category-filter">
+                            <i class="fas fa-filter"></i> Фильтр по категории:
+                        </label>
+                        <select id="category-filter" class="filter-select">
+                            <option value="all">Все категории</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="admin-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Изображение</th>
+                                <th>Название</th>
+                                <th>Цена</th>
+                                <th>Категория</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table">
+                            <tr>
+                                <td colspan="6" class="loading">
+                                    <i class="fas fa-spinner fa-spin"></i> Загрузка товаров...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Модальные окна -->
+    <div id="modal-overlay" class="modal-overlay"></div>
+
+    <!-- Модалка категории -->
+    <div id="category-modal" class="modal">
+        <div class="modal-header">
+            <h3 id="category-modal-title">Добавить категорию</h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="category-form" method="post">
+                <input type="hidden" id="category-id">
+                <div class="form-group">
+                    <label for="category-name">Название категории:</label>
+                    <input type="text" id="category-name" required
+                           placeholder="Введите название">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary modal-close">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модалка товара -->
+    <div id="product-modal" class="modal">
+        <div class="modal-header">
+            <h3 id="product-modal-title">Добавить товар</h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="product-form" method="post" enctype="multipart/form-data">
+                <input type="hidden" id="product-id">
+                <div class="form-group">
+                    <label for="product-name">Название товара:</label>
+                    <input type="text" id="product-name" required
+                           placeholder="Введите название">
+                </div>
+                <div class="form-group">
+                    <label for="product-price">Цена (₽):</label>
+                    <input type="number" id="product-price" required
+                           step="0.01" min="0" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="product-category">Категория:</label>
+                    <select id="product-category" required>
+                        <option value="">Выберите категорию</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="product-image">Изображение:</label>
+                    <input type="file" id="product-image"
+                           accept="image/png, image/jpeg, image/gif, image/webp">
+                    <div id="image-preview" class="image-preview"></div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary modal-close">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модалка подтверждения -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-header">
+            <h3>Подтверждение удаления</h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p id="confirm-message">Вы уверены, что хотите удалить этот элемент?</p>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary modal-close">Отмена</button>
+                <button type="button" id="confirm-delete" class="btn btn-danger">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>
